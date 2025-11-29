@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { CartItem, Coupon, Product, ProductWithUI } from '../types';
 import { Notification } from '../types';
+import useDebounce from './hooks/useDebounce';
 
 interface CartProps {
   setNotifications: React.Dispatch<React.SetStateAction<Notification[]>>;
@@ -22,7 +23,7 @@ const Cart = ({
 }: CartProps) => {
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const formatPrice = (price: number, productId?: string): string => {
     if (productId) {
@@ -131,13 +132,6 @@ const Cart = ({
       localStorage.removeItem('cart');
     }
   }, [cart]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [searchTerm]);
 
   const addToCart = useCallback(
     (product: ProductWithUI) => {
