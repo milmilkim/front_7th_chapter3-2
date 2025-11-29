@@ -4,46 +4,21 @@ import Cart from './Cart';
 import Notifications from './Notifications';
 import { CartItem, Coupon, Notification, ProductWithUI } from '../types';
 import { initialProducts, initialCoupons } from './constants';
+import { useLocalStorage } from './hooks/useLocalStorage';
 
 const App = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [cart, setCart] = useState<CartItem[]>(() => {
-    const saved = localStorage.getItem('cart');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {
-        return [];
-      }
-    }
-    return [];
-  });
+  const [cart, setCart] = useLocalStorage<CartItem[]>('cart', []);
   const [totalItemCount, setTotalItemCount] = useState(0);
-
-  const [products, setProducts] = useState<ProductWithUI[]>(() => {
-    const saved = localStorage.getItem('products');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {
-        return initialProducts;
-      }
-    }
-    return initialProducts;
-  });
-
-  const [coupons, setCoupons] = useState<Coupon[]>(() => {
-    const saved = localStorage.getItem('coupons');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {
-        return initialCoupons;
-      }
-    }
-    return initialCoupons;
-  });
+  const [products, setProducts] = useLocalStorage<ProductWithUI[]>(
+    'products',
+    initialProducts
+  );
+  const [coupons, setCoupons] = useLocalStorage<Coupon[]>(
+    'coupons',
+    initialCoupons
+  );
 
   const [searchTerm, setSearchTerm] = useState('');
 
