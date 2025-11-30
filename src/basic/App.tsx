@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import Admin from './pages/Admin';
-import Cart from './pages/Cart';
+import Admin from './pages/admin/AdminPage';
+import Cart from './pages/CartPage';
 import Notifications from './components/Notifications';
 import { useViewMode } from './hooks/useViewMode';
 import { useCart } from './hooks/useCart';
