@@ -7,6 +7,7 @@ import { useViewMode } from './hooks/useViewMode';
 import { useCart } from './hooks/useCart';
 import { useCoupons } from './hooks/useCoupons';
 import { useProducts } from './hooks/useProducts';
+import SearchBar from './components/SesarchBar';
 
 const App = () => {
   const { viewMode, toggleViewMode, isCartView, isAdminView } =
@@ -33,15 +34,11 @@ const App = () => {
               <h1 className="text-xl font-semibold text-gray-800">SHOP</h1>
               {/* 검색창 - 안티패턴: 검색 로직이 컴포넌트에 직접 포함 */}
               {viewMode === 'cart' && (
-                <div className="ml-8 flex-1 max-w-md">
-                  <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="상품 검색..."
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                  />
-                </div>
+                <SearchBar
+                  value={searchTerm}
+                  onChange={setSearchTerm}
+                  className="ml-8 flex-1 max-w-md"
+                />
               )}
             </div>
             <nav className="flex items-center space-x-4">
