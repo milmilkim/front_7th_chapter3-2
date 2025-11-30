@@ -31,8 +31,6 @@ const Cart = ({
     clearCart,
   } = cartActions;
 
-  const debouncedSearchTerm = useDebounce(searchTerm, 500);
-
   const handleClickAddToCart = (product: ProductWithUI) => {
     addToCart(product);
   };
@@ -83,16 +81,14 @@ const Cart = ({
     }, 3000);
   };
 
-  const filteredProducts = debouncedSearchTerm
+  const filteredProducts = searchTerm
     ? products.filter(
         (product) =>
-          product.name
-            .toLowerCase()
-            .includes(debouncedSearchTerm.toLowerCase()) ||
+          product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           (product.description &&
             product.description
               .toLowerCase()
-              .includes(debouncedSearchTerm.toLowerCase()))
+              .includes(searchTerm.toLowerCase()))
       )
     : products;
 
@@ -120,7 +116,7 @@ const Cart = ({
           {filteredProducts.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-gray-500">
-                "{debouncedSearchTerm}"에 대한 검색 결과가 없습니다.
+                "{searchTerm}"에 대한 검색 결과가 없습니다.
               </p>
             </div>
           ) : (

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import Admin from './Admin';
 import Cart from './Cart';
 import Notifications from './Notifications';
@@ -8,22 +8,23 @@ import { useCart } from './hooks/useCart';
 import { useCoupons } from './hooks/useCoupons';
 import { useProducts } from './hooks/useProducts';
 import SearchBar from './components/SesarchBar';
+import useDebounce from './hooks/useDebounce';
 
 const App = () => {
   const { viewMode, toggleViewMode, isCartView, isAdminView } =
     useViewMode('cart');
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  const addNotification = useCallback(
-    (message: string, type: 'error' | 'success' | 'warning' = 'success') => {
-      const id = Date.now().toString();
-      setNotifications((prev) => [...prev, { id, message, type }]);
-      setTimeout(() => {
-        setNotifications((prev) => prev.filter((n) => n.id !== id));
-      }, 3000);
-    },
-    []
-  );
+  const addNotification = (
+    message: string,
+    type: 'error' | 'success' | 'warning' = 'success'
+  ) => {
+    const id = Date.now().toString();
+    setNotifications((prev) => [...prev, { id, message, type }]);
+    setTimeout(() => {
+      setNotifications((prev) => prev.filter((n) => n.id !== id));
+    }, 3000);
+  };
 
   const cartActions = useCart(addNotification);
   const { cart } = cartActions;
@@ -33,6 +34,7 @@ const App = () => {
   const { products, setProducts } = useProducts();
 
   const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -46,7 +48,6 @@ const App = () => {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center flex-1">
               <h1 className="text-xl font-semibold text-gray-800">SHOP</h1>
-              {/* 검색창 - 안티패턴: 검색 로직이 컴포넌트에 직접 포함 */}
               {viewMode === 'cart' && (
                 <SearchBar
                   value={searchTerm}
@@ -109,7 +110,7 @@ const App = () => {
             cartActions={cartActions}
             products={products}
             coupons={coupons}
-            searchTerm={searchTerm}
+            searchTerm={debouncedSearchTerm}
           />
         )}
       </main>
