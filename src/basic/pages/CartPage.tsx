@@ -79,16 +79,13 @@ const Cart = ({
   const totals = calculateTotal();
 
   const filteredProducts = debouncedSearchTerm
-    ? products.filter(
-        (product) =>
-          product.name
-            .toLowerCase()
-            .includes(debouncedSearchTerm.toLowerCase()) ||
-          (product.description &&
-            product.description
-              .toLowerCase()
-              .includes(debouncedSearchTerm.toLowerCase()))
-      )
+    ? products.filter((p) => {
+        const term = debouncedSearchTerm.toLowerCase();
+        return (
+          p.name.toLowerCase().includes(term) ||
+          p.description?.toLowerCase().includes(term)
+        );
+      })
     : products;
 
   return (
