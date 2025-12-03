@@ -1,4 +1,5 @@
 import { Coupon } from '../../types';
+import { formatPriceWithWon } from '../utils/formatters';
 
 interface CouponSelectorProps {
   coupons: Coupon[];
@@ -30,7 +31,7 @@ const CouponSelector = ({
             <option key={coupon.code} value={coupon.code}>
               {coupon.name} (
               {coupon.discountType === 'amount'
-                ? `${coupon.discountValue.toLocaleString()}원`
+                ? formatPriceWithWon(coupon.discountValue)
                 : `${coupon.discountValue}%`}
               )
             </option>
@@ -42,4 +43,3 @@ const CouponSelector = ({
 };
 
 export default CouponSelector;
-

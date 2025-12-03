@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Coupon } from '../../../types';
+import { isValidCouponCode } from '../../utils/validators';
 
 interface CouponFormProps {
   onSubmit: (coupon: Coupon) => void;
@@ -17,6 +18,12 @@ const CouponForm = ({ onSubmit, onCancel, addNotification }: CouponFormProps) =>
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!isValidCouponCode(form.code)) {
+      addNotification('쿠폰 코드는 4-12자의 영문 대문자와 숫자만 가능합니다', 'error');
+      return;
+    }
+    
     onSubmit(form);
     setForm({
       name: '',

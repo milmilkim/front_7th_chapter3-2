@@ -1,4 +1,5 @@
 import { Coupon } from '../../../types';
+import { formatPriceWithWon } from '../../utils/formatters';
 
 interface CouponCardProps {
   coupon: Coupon;
@@ -15,7 +16,7 @@ const CouponCard = ({ coupon, onRemove }: CouponCardProps) => {
           <div className="mt-2">
             <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-white text-indigo-700">
               {coupon.discountType === 'amount'
-                ? `${coupon.discountValue.toLocaleString()}원 할인`
+                ? `${formatPriceWithWon(coupon.discountValue)} 할인`
                 : `${coupon.discountValue}% 할인`}
             </span>
           </div>

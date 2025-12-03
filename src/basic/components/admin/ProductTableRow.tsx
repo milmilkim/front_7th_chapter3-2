@@ -1,4 +1,5 @@
 import { ProductWithUI } from '../../../types';
+import { formatPriceWithWon } from '../../utils/formatters';
 
 interface ProductTableRowProps {
   product: ProductWithUI;
@@ -13,10 +14,7 @@ const ProductTableRow = ({
   onEdit,
   onDelete,
 }: ProductTableRowProps) => {
-  const formatPrice = () => {
-    if (remainingStock <= 0) return 'SOLD OUT';
-    return `${product.price.toLocaleString()}원`;
-  };
+  const displayPrice = remainingStock <= 0 ? 'SOLD OUT' : formatPriceWithWon(product.price);
 
   const getStockBadgeClass = () => {
     if (product.stock > 10) return 'bg-green-100 text-green-800';
@@ -30,7 +28,7 @@ const ProductTableRow = ({
         {product.name}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        {formatPrice()}
+        {displayPrice}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         <span

@@ -3,6 +3,10 @@ export const formatPrice = (price: number): string => {
   return `₩${price.toLocaleString('ko-KR')}`;
 };
 
+export const formatPriceWithWon = (price: number): string => {
+  return `${price.toLocaleString('ko-KR')}원`;
+};
+
 // 날짜를 YYYY-MM-DD 형식으로 포맷
 export const formatDate = (date: Date): string => {
   return date.toISOString().split('T')[0];

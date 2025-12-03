@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ProductWithUI, Discount } from '../../../types';
+import { isValidPrice, isValidStock } from '../../utils/validators';
 
 interface ProductFormData {
   name: string;
@@ -61,9 +62,9 @@ const ProductForm = ({
 
   const handlePriceBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (value === '') {
-      setForm({ ...form, price: 0 });
-    } else if (parseInt(value) < 0) {
+    const price = parseInt(value) || 0;
+    
+    if (!isValidPrice(price)) {
       addNotification('가격은 0보다 커야 합니다', 'error');
       setForm({ ...form, price: 0 });
     }
@@ -78,12 +79,12 @@ const ProductForm = ({
 
   const handleStockBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (value === '') {
-      setForm({ ...form, stock: 0 });
-    } else if (parseInt(value) < 0) {
+    const stock = parseInt(value) || 0;
+    
+    if (!isValidStock(stock)) {
       addNotification('재고는 0보다 커야 합니다', 'error');
       setForm({ ...form, stock: 0 });
-    } else if (parseInt(value) > 9999) {
+    } else if (stock > 9999) {
       addNotification('재고는 9999개를 초과할 수 없습니다', 'error');
       setForm({ ...form, stock: 9999 });
     }

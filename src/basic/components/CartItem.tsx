@@ -1,4 +1,5 @@
 import { CartItem as CartItemType } from '../../types';
+import { formatPriceWithWon } from '../utils/formatters';
 
 interface CartItemProps {
   item: CartItemType;
@@ -73,7 +74,7 @@ const CartItem = ({
             </span>
           )}
           <p className="text-sm font-medium text-gray-900">
-            {Math.round(itemTotal).toLocaleString()}원
+            {formatPriceWithWon(Math.round(itemTotal))}
           </p>
         </div>
       </div>
