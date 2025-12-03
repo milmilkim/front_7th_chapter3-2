@@ -6,6 +6,7 @@ import OrderSummary from '../components/OrderSummary';
 import ProductList from '../components/ProductList';
 import { useCart } from '../hooks/useCart';
 import useDebounce from '../hooks/useDebounce';
+import * as productModel from '../models/product';
 
 interface CartProps {
   addNotification: (
@@ -78,15 +79,10 @@ const Cart = ({
 
   const totals = calculateTotal();
 
-  const filteredProducts = debouncedSearchTerm
-    ? products.filter((p) => {
-        const term = debouncedSearchTerm.toLowerCase();
-        return (
-          p.name.toLowerCase().includes(term) ||
-          p.description?.toLowerCase().includes(term)
-        );
-      })
-    : products;
+  const filteredProducts = productModel.filterProductsBySearchTerm(
+    products,
+    debouncedSearchTerm
+  );
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">

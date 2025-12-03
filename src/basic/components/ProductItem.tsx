@@ -1,5 +1,6 @@
 import { ProductWithUI } from '../../types';
 import { formatPrice } from '../utils/formatters';
+import * as productModel from '../models/product';
 
 interface ProductItemProps {
   product: ProductWithUI;
@@ -12,16 +13,11 @@ const ProductItem = ({
   remainingStock,
   onAddToCart,
 }: ProductItemProps) => {
-  const { name, description, price, discounts, isRecommended } = product;
-  const maxDiscountRate =
-    discounts.length > 0
-      ? Math.max(...discounts.map((d) => d.rate))
-      : undefined;
-  const discountQuantity =
-    discounts.length > 0
-      ? discounts.reduce((min, d) => Math.min(min, d.quantity), Infinity)
-      : undefined;
-  const isSoldOut = remainingStock <= 0;
+  const { name, description, price, isRecommended } = product;
+
+  const maxDiscountRate = productModel.getMaxDiscountRate(product);
+  const discountQuantity = productModel.getMinDiscountQuantity(product);
+  const isSoldOut = productModel.isSoldOut(remainingStock);
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">

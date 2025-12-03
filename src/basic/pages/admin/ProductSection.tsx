@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { CartItem, Product, ProductWithUI, Discount } from '../../../types';
+import { CartItem, ProductWithUI, Discount } from '../../../types';
 import { useProducts } from '../../hooks/useProducts';
 import ProductTableRow from '../../components/admin/ProductTableRow';
 import ProductForm from '../../components/admin/ProductForm';
+import * as cartModel from '../../models/cart';
 
 interface ProductFormData {
   name: string;
@@ -31,11 +32,6 @@ const ProductSection = ({
   const [editingProduct, setEditingProduct] = useState<ProductWithUI | null>(
     null
   );
-
-  const getRemainingStock = (product: Product): number => {
-    const cartItem = cart.find((item) => item.product.id === product.id);
-    return product.stock - (cartItem?.quantity || 0);
-  };
 
   const handleProductSubmit = (formData: ProductFormData) => {
     if (editingProduct) {
@@ -106,7 +102,7 @@ const ProductSection = ({
               <ProductTableRow
                 key={product.id}
                 product={product}
-                remainingStock={getRemainingStock(product)}
+                remainingStock={cartModel.getRemainingStock(product, cart)}
                 onEdit={handleEditProduct}
                 onDelete={handleDeleteProduct}
               />
