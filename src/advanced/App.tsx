@@ -3,9 +3,9 @@ import Cart from './pages/CartPage';
 import Notifications from './components/Notifications';
 import { useViewMode } from './hooks/useViewMode';
 import Header from './components/Header';
-import { useNotificationContext } from './contexts';
+import { AppProviders, useNotificationContext } from './contexts';
 
-const App = () => {
+const AppContent = () => {
   const { viewMode, toggleViewMode, isCartView, isAdminView } =
     useViewMode('cart');
 
@@ -28,6 +28,14 @@ const App = () => {
         {viewMode === 'admin' ? <Admin /> : <Cart />}
       </main>
     </div>
+  );
+};
+
+const App = () => {
+  return (
+    <AppProviders>
+      <AppContent />
+    </AppProviders>
   );
 };
 

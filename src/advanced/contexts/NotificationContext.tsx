@@ -1,25 +1,14 @@
 import { createContext, useContext, ReactNode } from 'react';
 import { useNotifications } from '../hooks/useNotifications';
+import { Notification } from '../../types';
 
 interface NotificationContextType {
-  notifications: Array<{
-    id: number;
-    message: string;
-    type: 'error' | 'success' | 'warning';
-  }>;
+  notifications: Notification[];
   addNotification: (
     message: string,
     type: 'error' | 'success' | 'warning'
   ) => void;
-  setNotifications: React.Dispatch<
-    React.SetStateAction<
-      Array<{
-        id: number;
-        message: string;
-        type: 'error' | 'success' | 'warning';
-      }>
-    >
-  >;
+  setNotifications: React.Dispatch<React.SetStateAction<Notification[]>>;
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(
