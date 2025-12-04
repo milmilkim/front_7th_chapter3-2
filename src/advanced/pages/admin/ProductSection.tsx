@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { CartItem, ProductWithUI, Discount } from '../../../types';
-import { useProducts } from '../../hooks/useProducts';
+import { ProductWithUI, Discount } from '../../../types';
 import ProductTableRow from '../../components/admin/ProductTableRow';
 import ProductForm from '../../components/admin/ProductForm';
 import * as cartModel from '../../models/cart';
+import { useCartContext, useProductContext } from '../../contexts';
 
 interface ProductFormData {
   name: string;
@@ -13,20 +13,9 @@ interface ProductFormData {
   discounts: Discount[];
 }
 
-interface ProductProps {
-  addNotification: (
-    message: string,
-    type: 'error' | 'success' | 'warning'
-  ) => void;
-  productActions: ReturnType<typeof useProducts>;
-  cart: CartItem[];
-}
-
-const ProductSection = ({
-  addNotification,
-  productActions,
-  cart,
-}: ProductProps) => {
+const ProductSection = () => {
+  const { cart } = useCartContext();
+  const productActions = useProductContext();
   const { products } = productActions;
   const [showProductForm, setShowProductForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<ProductWithUI | null>(
@@ -116,7 +105,6 @@ const ProductSection = ({
           editingProduct={editingProduct}
           onSubmit={handleProductSubmit}
           onCancel={handleCancel}
-          addNotification={addNotification}
         />
       )}
     </section>

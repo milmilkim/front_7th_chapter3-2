@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { Coupon } from '../../../types';
 import { isValidCouponCode } from '../../utils/validators';
+import { useNotificationContext } from '../../contexts';
 
 interface CouponFormProps {
   onSubmit: (coupon: Coupon) => void;
   onCancel: () => void;
-  addNotification: (message: string, type: 'error' | 'success' | 'warning') => void;
 }
 
-const CouponForm = ({ onSubmit, onCancel, addNotification }: CouponFormProps) => {
+const CouponForm = ({ onSubmit, onCancel }: CouponFormProps) => {
+  const { addNotification } = useNotificationContext();
   const [form, setForm] = useState({
     name: '',
     code: '',

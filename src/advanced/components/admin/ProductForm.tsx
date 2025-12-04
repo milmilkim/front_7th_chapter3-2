@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ProductWithUI, Discount } from '../../../types';
 import { isValidPrice, isValidStock } from '../../utils/validators';
+import { useNotificationContext } from '../../contexts';
 
 interface ProductFormData {
   name: string;
@@ -14,7 +15,6 @@ interface ProductFormProps {
   editingProduct: ProductWithUI | null;
   onSubmit: (data: ProductFormData) => void;
   onCancel: () => void;
-  addNotification: (message: string, type: 'error' | 'success' | 'warning') => void;
 }
 
 const initialForm: ProductFormData = {
@@ -29,8 +29,8 @@ const ProductForm = ({
   editingProduct,
   onSubmit,
   onCancel,
-  addNotification,
 }: ProductFormProps) => {
+  const { addNotification } = useNotificationContext();
   const [form, setForm] = useState<ProductFormData>(initialForm);
   const isEditing = editingProduct !== null;
 

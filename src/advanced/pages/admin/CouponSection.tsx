@@ -1,21 +1,11 @@
 import { useState } from 'react';
 import { Coupon } from '../../../types';
-import { useCoupons } from '../../hooks/useCoupons';
 import CouponCard from '../../components/admin/CouponCard';
 import CouponForm from '../../components/admin/CouponForm';
+import { useCouponContext } from '../../contexts';
 
-interface CouponSectionProps {
-  addNotification: (
-    message: string,
-    type: 'error' | 'success' | 'warning'
-  ) => void;
-  couponActions: ReturnType<typeof useCoupons>;
-}
-
-const CouponSection = ({
-  addNotification,
-  couponActions,
-}: CouponSectionProps) => {
+const CouponSection = () => {
+  const couponActions = useCouponContext();
   const { coupons } = couponActions;
   const [showCouponForm, setShowCouponForm] = useState(false);
 
@@ -70,7 +60,6 @@ const CouponSection = ({
           <CouponForm
             onSubmit={handleAddCoupon}
             onCancel={() => setShowCouponForm(false)}
-            addNotification={addNotification}
           />
         )}
       </div>

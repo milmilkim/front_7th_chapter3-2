@@ -1,26 +1,8 @@
 import { useState } from 'react';
-import { CartItem } from '../../../types';
-import { useProducts } from '../../hooks/useProducts';
-import { useCoupons } from '../../hooks/useCoupons';
 import ProductSection from './ProductSection';
 import CouponSection from './CouponSection';
 
-interface AdminProps {
-  addNotification: (
-    message: string,
-    type: 'error' | 'success' | 'warning'
-  ) => void;
-  productActions: ReturnType<typeof useProducts>;
-  couponActions: ReturnType<typeof useCoupons>;
-  cart: CartItem[];
-}
-
-const Admin = ({
-  addNotification,
-  productActions,
-  couponActions,
-  cart,
-}: AdminProps) => {
+const Admin = () => {
   const [activeTab, setActiveTab] = useState<'products' | 'coupons'>(
     'products'
   );
@@ -56,18 +38,7 @@ const Admin = ({
         </nav>
       </div>
 
-      {activeTab === 'products' ? (
-        <ProductSection
-          addNotification={addNotification}
-          productActions={productActions}
-          cart={cart}
-        />
-      ) : (
-        <CouponSection
-          addNotification={addNotification}
-          couponActions={couponActions}
-        />
-      )}
+      {activeTab === 'products' ? <ProductSection /> : <CouponSection />}
     </div>
   );
 };

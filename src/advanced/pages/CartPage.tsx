@@ -1,30 +1,21 @@
-import { Coupon, ProductWithUI } from '../../types';
+import { ProductWithUI } from '../../types';
 import CartSection from '../components/CartSection';
 import CouponSelector from '../components/CouponSelector';
 import Empty from '../components/Empty';
 import OrderSummary from '../components/OrderSummary';
 import ProductList from '../components/ProductList';
-import { useCart } from '../hooks/useCart';
 import useDebounce from '../hooks/useDebounce';
 import * as productModel from '../models/product';
+import {
+  useNotificationContext,
+  useCartContext,
+  useProductContext,
+  useCouponContext,
+  useSearchContext,
+} from '../contexts';
 
-interface CartProps {
-  addNotification: (
-    message: string,
-    type: 'error' | 'success' | 'warning'
-  ) => void;
-  cartActions: ReturnType<typeof useCart>;
-  products: ProductWithUI[];
-  coupons: Coupon[];
-  searchTerm: string;
-}
-const Cart = ({
-  addNotification,
-  cartActions,
-  products,
-  coupons,
-  searchTerm,
-}: CartProps) => {
+const Cart = () => {
+  const { addNotification } = useNotificationContext();
   const {
     cart,
     addToCart,
@@ -37,7 +28,10 @@ const Cart = ({
     getRemainingStock,
     getItemTotal,
     clearCart,
-  } = cartActions;
+  } = useCartContext();
+  const { products } = useProductContext();
+  const { coupons } = useCouponContext();
+  const { searchTerm } = useSearchContext();
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 

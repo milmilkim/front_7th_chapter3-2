@@ -1,6 +1,5 @@
-import { CartItem } from '../../types';
 import { type ViewMode } from '../hooks/useViewMode';
-
+import { useCartContext, useSearchContext } from '../contexts';
 import SearchBar from './SesarchBar';
 
 interface HeaderProps {
@@ -8,9 +7,6 @@ interface HeaderProps {
   toggleViewMode: () => void;
   isAdminView: boolean;
   isCartView: boolean;
-  cart: CartItem[];
-  searchTerm: string;
-  setSearchTerm: (value: string) => void;
 }
 
 const Header = ({
@@ -18,10 +14,10 @@ const Header = ({
   toggleViewMode,
   isAdminView,
   isCartView,
-  cart,
-  searchTerm,
-  setSearchTerm,
 }: HeaderProps) => {
+  const { cart } = useCartContext();
+  const { searchTerm, setSearchTerm } = useSearchContext();
+
   const getTotalItemCount = () => {
     return cart.reduce((sum, item) => sum + item.quantity, 0);
   };
