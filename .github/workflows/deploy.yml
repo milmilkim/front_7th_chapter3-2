@@ -40,8 +40,8 @@ jobs:
       - name: Build
         run: pnpm run build:deploy
 
-      - name: Rename to index.html
-        run: mv dist/index.advanced.html dist/index.html
+      - name: Set advanced as default
+        run: cp dist/index.advanced.html dist/index.html
 
       - name: Copy 404.html
         run: cp dist/index.html dist/404.html
